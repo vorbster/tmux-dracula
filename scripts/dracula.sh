@@ -33,6 +33,7 @@ main()
   show_ssh_session_port=$(get_tmux_option "@dracula-show-ssh-session-port" false)
   IFS=' ' read -r -a plugins <<< $(get_tmux_option "@dracula-plugins" "battery network weather")
   show_empty_plugins=$(get_tmux_option "@dracula-show-empty-plugins" true)
+  bg_color=$(get_tmux_option "@dracula-background-color" '#44475')
 
   # Dracula Color Pallette
   white='#f8f8f2'
@@ -125,8 +126,8 @@ main()
 
   # Status left
   if $show_powerline; then
-    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${gray}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
-    powerbg=${gray}
+    tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon} #[fg=${green},bg=${bg_color}]#{?client_prefix,#[fg=${yellow}],}${left_sep}"
+    powerbg=${bg_color}
   else
     tmux set-option -g status-left "#[bg=${green},fg=${dark_gray}]#{?client_prefix,#[bg=${yellow}],} ${left_icon}"
   fi
@@ -285,12 +286,14 @@ main()
 
   # Window option
   if $show_powerline; then
-    tmux set-window-option -g window-status-current-format "#[fg=${gray},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${gray}]${left_sep}"
+    tmux set-window-option -g window-status-current-format "#[fg=${bg_color},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${bg_color}]${left_sep}"
+    set-window-option -g window-status-separator ''
   else
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
   fi
 
-  tmux set-window-option -g window-status-format "#[fg=${white}]#[bg=${gray}] #I #W${flags}"
+  tmux set-window-option -g window-status-format "#[fg=${bg_color},bg=${gray}]${left_sep}#[fg=${white}]#[bg=${gray}] #I #W${flags} #[fg=${gray},bg=${bg_color}]"
+
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
 }
