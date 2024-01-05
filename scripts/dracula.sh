@@ -296,7 +296,8 @@ main()
 
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
-  date
+
+  tmux set-option -g status-bg ${bg_color}
 }
 
 # run main function
