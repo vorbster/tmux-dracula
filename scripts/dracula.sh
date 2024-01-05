@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # setting the locale, some users have issues with different locales, this forces the correct one
-export LC_ALL=en_US.UTF-8
+#export LC_ALL=en_US.UTF-8
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $current_dir/utils.sh
@@ -83,7 +83,7 @@ main()
       false)
         timezone="";;
       true)
-        timezone="#(date +%Z)";;
+        timezone="$(date +%Z)";;
     esac
   fi
 
@@ -253,7 +253,7 @@ main()
         elif $show_day_month; then # only dd/mm
           script="%a %d/%m %I:%M %p ${timezone} "
         else
-          script="%a %m/%d %I:%M %p ${timezone} "
+          script="%a %m/%d %I:%M %p ${timezone}"
         fi
       fi
     elif [ $plugin = "synchronize-panes" ]; then
@@ -287,7 +287,7 @@ main()
   # Window option
   if $show_powerline; then
     tmux set-window-option -g window-status-current-format "#[fg=${bg_color},bg=${dark_purple}]${left_sep}#[fg=${white},bg=${dark_purple}] #I #W${current_flags} #[fg=${dark_purple},bg=${bg_color}]${left_sep}"
-    set-window-option -g window-status-separator ''
+    tmux set-window-option -g window-status-separator ''
   else
     tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
   fi
@@ -296,6 +296,7 @@ main()
 
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
+  date
 }
 
 # run main function
